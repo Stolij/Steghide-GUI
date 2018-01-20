@@ -48,11 +48,17 @@ private slots:
 
     void on_ExtractButton_clicked();
 
+    void on_CheckFileButton_clicked();
+
+    void GetContents();
+
+    void update_HideFilesModel(QStringList filenames);
+
 private:
     Ui::MainWindow *ui;
     Dialog     *dialog;
     QFileSystemModel *dirmodel;
-    FilesToAddListModel* filesmodel;
+    FilesToAddListModel *filesmodel;
     QHeaderView *files_v_header;
     QStringList filenames;
     QString sPath;

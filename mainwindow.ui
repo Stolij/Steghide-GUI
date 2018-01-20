@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>883</width>
     <height>600</height>
    </rect>
   </property>
@@ -28,7 +28,7 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>800</width>
+      <width>858</width>
       <height>574</height>
      </rect>
     </property>
@@ -47,7 +47,7 @@
       </widget>
      </item>
      <item row="5" column="2" colspan="2">
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="Label_SpaceforFiles">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -67,7 +67,7 @@
       </widget>
      </item>
      <item row="2" column="2" colspan="2">
-      <widget class="QLabel" name="label_1">
+      <widget class="QLabel" name="Label_Secret_Files">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -81,8 +81,14 @@
          <bold>true</bold>
         </font>
        </property>
+       <property name="toolTip">
+        <string>(Super Secret Files)</string>
+       </property>
+       <property name="toolTipDuration">
+        <number>-1</number>
+       </property>
        <property name="text">
-        <string>Secret files:</string>
+        <string>Hidden files:</string>
        </property>
       </widget>
      </item>
@@ -109,7 +115,7 @@
       </widget>
      </item>
      <item row="2" column="0" colspan="2">
-      <widget class="QLabel" name="label_0">
+      <widget class="QLabel" name="Label_Carrier_Files">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -201,6 +207,9 @@
       <layout class="QGridLayout" name="MenuGridLayout">
        <item row="0" column="1">
         <widget class="QToolButton" name="AddFilesButton">
+         <property name="toolTip">
+          <string>Add a file to the list of files to be hidden</string>
+         </property>
          <property name="text">
           <string>Add Files</string>
          </property>
@@ -219,96 +228,11 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="4">
-        <widget class="QToolButton" name="SettingsButton">
-         <property name="text">
-          <string>Settings</string>
-         </property>
-         <property name="icon">
-          <iconset resource="imageresources.qrc">
-           <normaloff>:/resources/images/settings.png</normaloff>:/resources/images/settings.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>100</width>
-           <height>40</height>
-          </size>
-         </property>
-         <property name="toolButtonStyle">
-          <enum>Qt::ToolButtonTextUnderIcon</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="5">
-        <widget class="QToolButton" name="ConverButton">
-         <property name="font">
-          <font>
-           <pointsize>9</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Audio Converter</string>
-         </property>
-         <property name="icon">
-          <iconset resource="imageresources.qrc">
-           <normaloff>:/resources/images/convert.png</normaloff>:/resources/images/convert.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>100</width>
-           <height>40</height>
-          </size>
-         </property>
-         <property name="toolButtonStyle">
-          <enum>Qt::ToolButtonTextUnderIcon</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QToolButton" name="ReloadButton">
-         <property name="text">
-          <string>Reload</string>
-         </property>
-         <property name="icon">
-          <iconset resource="imageresources.qrc">
-           <normaloff>:/resources/images/reload.png</normaloff>:/resources/images/reload.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>100</width>
-           <height>40</height>
-          </size>
-         </property>
-         <property name="toolButtonStyle">
-          <enum>Qt::ToolButtonTextUnderIcon</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QToolButton" name="ExtractButton">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="text">
-          <string>Extract files</string>
-         </property>
-         <property name="icon">
-          <iconset resource="imageresources.qrc">
-           <normaloff>:/resources/images/extract.png</normaloff>:/resources/images/extract.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>100</width>
-           <height>40</height>
-          </size>
-         </property>
-         <property name="toolButtonStyle">
-          <enum>Qt::ToolButtonTextUnderIcon</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="7">
+       <item row="0" column="8">
         <widget class="QToolButton" name="HelpButton">
+         <property name="toolTip">
+          <string>Pretty self explainatory</string>
+         </property>
          <property name="text">
           <string>Help</string>
          </property>
@@ -327,13 +251,84 @@
          </property>
         </widget>
        </item>
+       <item row="0" column="2">
+        <widget class="QToolButton" name="ExtractButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="toolTip">
+          <string>Extract files from carrier</string>
+         </property>
+         <property name="statusTip">
+          <string/>
+         </property>
+         <property name="text">
+          <string>Extract Files</string>
+         </property>
+         <property name="icon">
+          <iconset resource="imageresources.qrc">
+           <normaloff>:/resources/images/extract.png</normaloff>:/resources/images/extract.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>100</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonTextUnderIcon</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QToolButton" name="ReloadButton">
+         <property name="toolTip">
+          <string>Refresh the file explorer</string>
+         </property>
+         <property name="text">
+          <string>Reload</string>
+         </property>
+         <property name="icon">
+          <iconset resource="imageresources.qrc">
+           <normaloff>:/resources/images/reload.png</normaloff>:/resources/images/reload.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>100</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonTextUnderIcon</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="7">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>13</width>
+           <height>70</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
        <item row="0" column="3">
         <widget class="QToolButton" name="EncodeButton">
          <property name="enabled">
           <bool>false</bool>
          </property>
+         <property name="toolTip">
+          <string>Place files into carrier</string>
+         </property>
          <property name="text">
-          <string>Encode</string>
+          <string>Hide Files</string>
          </property>
          <property name="icon">
           <iconset resource="imageresources.qrc">
@@ -350,33 +345,80 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="6">
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+       <item row="0" column="5">
+        <widget class="QToolButton" name="SettingsButton">
+         <property name="toolTip">
+          <string>Configure StegHide-GUI</string>
          </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
+         <property name="text">
+          <string>Settings</string>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="icon">
+          <iconset resource="imageresources.qrc">
+           <normaloff>:/resources/images/settings.png</normaloff>:/resources/images/settings.png</iconset>
+         </property>
+         <property name="iconSize">
           <size>
-           <width>13</width>
-           <height>70</height>
+           <width>100</width>
+           <height>40</height>
           </size>
          </property>
-        </spacer>
+         <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonTextUnderIcon</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="4">
+        <widget class="QToolButton" name="CheckFileButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>9</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Check file for StegHide information</string>
+         </property>
+         <property name="text">
+          <string>Check Contents</string>
+         </property>
+         <property name="icon">
+          <iconset resource="imageresources.qrc">
+           <normaloff>:/resources/images/convert.png</normaloff>:/resources/images/convert.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>100</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>false</bool>
+         </property>
+         <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonTextUnderIcon</enum>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
     </layout>
     <zorder>FreeSpaceProgressBar</zorder>
-    <zorder>label_2</zorder>
+    <zorder>Label_SpaceforFiles</zorder>
     <zorder>line</zorder>
     <zorder>FileTableView</zorder>
-    <zorder>label_1</zorder>
+    <zorder>Label_Secret_Files</zorder>
     <zorder>FilesAndFoldersTreeView</zorder>
     <zorder>FilesAndFolders_MainPath</zorder>
-    <zorder>label_0</zorder>
+    <zorder>Label_Carrier_Files</zorder>
     <zorder></zorder>
    </widget>
   </widget>

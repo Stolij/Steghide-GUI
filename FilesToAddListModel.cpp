@@ -7,12 +7,11 @@ FilesToAddListModel::FilesToAddListModel(QStringList filepaths, QObject *parent)
 }
 
 void FilesToAddListModel::setStringList(QStringList filepaths, const QModelIndex &parent) {
-    for(int i=0; i<filepaths.size(); i++){
+    for(int i = 0; i < filepaths.size(); i++){
         beginInsertRows(parent, (int)FilesToAdd_.size(), (int)FilesToAdd_.size());
         FilesToAdd_.push_back(FilesToAdd(filepaths.at(i)));
         sum_size+=FilesToAdd_.back().filesize_byte;
         endInsertRows();
-
     }
 }
 
@@ -38,18 +37,17 @@ QVariant FilesToAddListModel::data(const QModelIndex& index, int role) const {
     }
     return QVariant();
 }
-QVariant FilesToAddListModel::headerData(int section, Qt::Orientation orientation,int role) const
-    {
+QVariant FilesToAddListModel::headerData(int section, Qt::Orientation orientation,int role) const {
+
         if (role != Qt::DisplayRole)
             return QVariant();
 
         if (orientation == Qt::Horizontal){
-        if(section==0) return QString("Secret file name");
-        if(section==1) return QString("Size in MB");
-        else           return QString("Column %1").arg(section);
+            if(section == 0) return QString("hidden file name(s)");
+            if(section == 1) return QString("Size (MB)");
+            else return QString("Column %1").arg(section);
         }
-        else
-            return QString("X");
+        else return QString("X");
     }
 
 void FilesToAddListModel::removeRow(int row, const QModelIndex &parent)
