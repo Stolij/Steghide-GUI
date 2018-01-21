@@ -49,8 +49,7 @@ void MainWindow::on_ReloadButton_clicked()
         ui->FilesAndFoldersTreeView->setRootIndex(dirmodel->index(sPath));
     }
     else{
-        QWidget tmp;
-        QMessageBox::critical(&tmp,"Error","Invalid Path!");
+        QMessageBox::critical(this, "Error", "Invalid Path!");
     }
 }
 
@@ -61,7 +60,7 @@ void MainWindow::on_AddFilesButton_clicked()
     update_HideFilesModel(filenames);
 }
 
-void MainWindow::on_sectionClicked ( int logicalIndex )
+void MainWindow::on_sectionClicked (int logicalIndex)
 {
     filesmodel->removeRow(logicalIndex);
 
@@ -101,9 +100,9 @@ void MainWindow::on_CheckFileButton_clicked()
 void MainWindow::on_EncodeButton_clicked()
 {
     bool ok = false;
-    passphrase=QInputDialog::getText(this,"Specify passphrase (leave empty for none)","Enter passphrase:",QLineEdit::Password, nullptr, &ok);
+    passphrase=QInputDialog::getText(this, "Specify passphrase (leave empty for none)","Enter passphrase:", QLineEdit::Password, nullptr, &ok);
     if (!ok) return;
-    //encode the data
+    //encode the data (WIP)
     ExtractDialog *encode_dialog;
     encode_dialog =new ExtractDialog(this);
     encode_dialog->setWindowTitle("Encoder");
@@ -117,7 +116,7 @@ void MainWindow::on_FilesAndFoldersTreeView_clicked(const QModelIndex &index)
     if((ui->FilesAndFoldersTreeView->selectionModel()->isSelected(index))&&(QFileInfo(dirmodel->filePath(index)).isFile())){
         try
         {
-            selected_file =  CvrStgFile::readFile ((dirmodel->filePath(index)).toUtf8().constData()) ;
+            selected_file =  CvrStgFile::readFile((dirmodel->filePath(index)).toUtf8().constData()) ;
             update_FreeSpaceProgressBar();
             ui->EncodeButton->setEnabled(true);
             ui->ExtractButton->setEnabled(true);
@@ -129,8 +128,7 @@ void MainWindow::on_FilesAndFoldersTreeView_clicked(const QModelIndex &index)
             ui->ExtractButton->setEnabled(false);
             ui->EncodeButton->setEnabled(false);
             ui->CheckFileButton->setEnabled(false);
-            QWidget tmp;
-            QMessageBox::critical(&tmp,"Error","Unsupported File!");
+            QMessageBox::critical(this, "Error", "Unsupported File!");
         }
     }
     else
@@ -171,25 +169,22 @@ void MainWindow::GetContents()
     if (!ok) return;
     try
     {
-        QString fn;
-        QStringList fnn;
-        fnn.clear();
+        QString filename;
+        QStringList filenamelist;
+        filenamelist.clear();
 
         QModelIndex index = ui->FilesAndFoldersTreeView->selectionModel()->selectedIndexes().at(0);
         std::string dirmodel_path = (dirmodel->filePath(index)).toUtf8().constData();
-        Extractor ext (dirmodel_path, passphrase.toUtf8().constData());
+        Extractor extractor (dirmodel_path, passphrase.toUtf8().constData());
 
-        EmbData* embdata = ext.extract();
+        EmbData* embdata = extractor.extract();
 
-        fn = QString::fromUtf8(embdata->getFileName().data(), embdata->getFileName().size());
-        if (!fnn.contains(fn))
+        filename = QString::fromUtf8(embdata->getFileName().data(), embdata->getFileName().size());
+        if (!filenamelist.contains(filename) && filename.length() != 0)
         {
-            fnn.append(fn);
-        }
-        if (fn.length() != 0)
-        {
-            update_HideFilesModel(fnn);
-        }
+            filenamelist.append(filename);
+            update_HideFilesModel(filenamelist);
+        }        
         return;
     }
     catch (...)
@@ -217,14 +212,14 @@ void MainWindow::on_ExtractButton_clicked()
             EmbData* embdata = ext.extract();
 
             // write data
-            std::string fn ;
+            std::string filename ;
                 // write extracted data to file with embedded file name
-                fn = embdata->getFileName() ;
-                if (fn.length() == 0) {
-                    fn=(QInputDialog::getText(this,"Please specify a file name for the extracted data (there is no name embedded in the stego file).","Enter filename:",QLineEdit::Normal)).toUtf8().constData();
+                filename = embdata->getFileName() ;
+                if (filename.length() == 0) {
+                    filename=(QInputDialog::getText(this,"Please specify a file name for the extracted data (embedded name wasn't found).","Enter filename:",QLineEdit::Normal)).toUtf8().constData();
                 }
 
-            extract_dialog->setlabeltext( QString::fromStdString("Writing extracted data to: "+fn));
+            extract_dialog->setlabeltext( QString::fromStdString("Writing extracted data to: "+filename));
 
             QString * myString = new QString();
             myString->clear();
@@ -232,13 +227,13 @@ void MainWindow::on_ExtractButton_clicked()
             StdRedirector<>* myRedirector = new StdRedirector<>( std::cerr, outcallback, myString );
             BinaryIO *io;
             try{
-            io = new BinaryIO (dirmodel_path.substr(0,dirmodel_path.find_last_of("//"))+"/"+fn, BinaryIO::WRITE) ;
+            io = new BinaryIO (dirmodel_path.substr(0,dirmodel_path.find_last_of("//"))+"/"+filename, BinaryIO::WRITE) ;
             }
             catch(SteghideError e){
                  QMessageBox::StandardButton reply = QMessageBox::question(this, "Overwrite file?", myString->toUtf8().constData(), QMessageBox::Yes|QMessageBox::No);
                 if (reply == QMessageBox::Yes) {
                     Args.Force.setValue(true);
-                    io = new BinaryIO (fn, BinaryIO::WRITE);
+                    io = new BinaryIO (filename, BinaryIO::WRITE);
                     Args.Force.setValue(false);
                 }
                 else
@@ -262,7 +257,7 @@ void MainWindow::on_ExtractButton_clicked()
                     extract_dialog->setprogressbarvalue(progress);
                 }
                 io->close() ;
-                extract_dialog->setlabeltext( QString::fromStdString("wrote extracted data to \""+fn+"\"."));
+                extract_dialog->setlabeltext( QString::fromStdString("wrote extracted data to \""+filename+"\"."));
             }
             else{
                 extract_dialog->setlabeltext( "ERROR" );
