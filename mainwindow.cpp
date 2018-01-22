@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->FilesAndFoldersTreeView->setRootIndex(dirmodel->index(sPath));
     filesmodel = new FilesToAddListModel(filenames);
     ui->FileTableView->setModel(filesmodel);
+    ui->FilesAndFolders_MainPath->setText(sPath);
     files_v_header= ui->FileTableView->verticalHeader();
     connect(files_v_header, SIGNAL(sectionClicked(int)), this, SLOT(on_sectionClicked(int)));
 }
@@ -50,6 +51,7 @@ void MainWindow::on_ReloadButton_clicked()
     }
     else{
         QMessageBox::critical(this, "Error", "Invalid Path!");
+        ui->FilesAndFolders_MainPath->setText(getenv("HOME"));
     }
 }
 
