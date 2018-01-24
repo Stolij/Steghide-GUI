@@ -4,6 +4,7 @@
 #include "QStringListModel"
 #include "QMessageBox"
 #include "QInputDialog"
+#include <steghide-src/Embedder.h>
 #include <QTextStream>
 #include <QLabel>
 #include <QTextBrowser>
@@ -111,6 +112,15 @@ void MainWindow::on_EncodeButton_clicked()
     encode_dialog->setModal(true);
     encode_dialog->setlabeltext("Encoding...");
     encode_dialog->show();
+    try
+    {
+        //Embedder *embedder = new Embedder();
+        return;
+    }
+    catch (...)
+    {
+
+    }
 }
 
 void MainWindow::on_FilesAndFoldersTreeView_clicked(const QModelIndex &index)

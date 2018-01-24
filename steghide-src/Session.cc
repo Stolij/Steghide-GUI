@@ -36,11 +36,10 @@
 
 void Session::run ()
 {
-	switch (Args.Command.getValue()) {
-		case EMBED: {
-			Embedder emb ;
-			emb.embed() ;
-		break ; }
+    switch (Args.Command.getValue()) {
+        case EMBED: {
+
+        break ; }
 
 		case EXTRACT: {
 			Extractor ext (Args.StgFn.getValue(), Args.Passphrase.getValue()) ;

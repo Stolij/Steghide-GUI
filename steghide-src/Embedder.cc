@@ -40,96 +40,96 @@
 
 Globals Globs ;
 
-Embedder::Embedder ()
+Embedder::Embedder()
 {
 	// read embfile
-	VerboseMessage vrs ;
-	if (Args.EmbFn.getValue() == "") {
-		vrs.setMessage (_("reading secret data from standard input...")) ;
-	}
-	else {
-		vrs.setMessage (_("reading secret file \"%s\"..."), Args.EmbFn.getValue().c_str()) ;
-		vrs.setNewline (false) ;
-	}
-	vrs.printMessage() ;
+    VerboseMessage vrs ;
+    if (Args.EmbFn.getValue() == "") {
+        vrs.setMessage (_("reading secret data from standard input...")) ;
+    }
+    else {
+        vrs.setMessage (_("reading secret file \"%s\"..."), Args.EmbFn.getValue().c_str()) ;
+        vrs.setNewline (false) ;
+    }
+    vrs.printMessage() ;
 
 	std::vector<BYTE> emb ;
 	BinaryIO embio (Args.EmbFn.getValue(), BinaryIO::READ) ;
-	while (!embio.eof()) {
+    while (!embio.eof()) {
 		emb.push_back (embio.read8()) ;
 	}
 	embio.close() ;
 
-	VerboseMessage vdone (_(" done")) ;
-	if (Args.EmbFn.getValue() != "") {
-		vdone.printMessage() ;
-	}
+    VerboseMessage vdone (_(" done")) ;
+    if (Args.EmbFn.getValue() != "") {
+        vdone.printMessage() ;
+    }
 
 	// create bitstring to be embedded
-	std::string fn = "" ;
-	if (Args.EmbedEmbFn.getValue()) {
-		fn = Args.EmbFn.getValue() ;
-	}
-	EmbData embdata (EmbData::EMBED, Args.Passphrase.getValue(), fn) ;
+    std::string fn = "" ;
+    if (Args.EmbedEmbFn.getValue()) {
+        fn = Args.EmbFn.getValue() ;
+    }
+    EmbData embdata (EmbData::EMBED, Args.Passphrase.getValue(), fn) ;
 	embdata.setEncAlgo (Args.EncAlgo.getValue()) ;
 	embdata.setEncMode (Args.EncMode.getValue()) ;
-	embdata.setCompression (Args.Compression.getValue()) ;
-	embdata.setChecksum (Args.Checksum.getValue()) ;
-	embdata.setData (emb) ;
+    embdata.setCompression (Args.Compression.getValue()) ;
+    embdata.setChecksum (Args.Checksum.getValue()) ;
+    embdata.setData (emb) ;
 	ToEmbed = embdata.getBitString() ;
 
 	// read cover-/stego-file
-	VerboseMessage vrc ;
-	if (Args.CvrFn.getValue() == "") {
-		vrc.setMessage (_("reading cover file from standard input...")) ;
-	}
-	else {
-		vrc.setMessage (_("reading cover file \"%s\"..."), Args.CvrFn.getValue().c_str()) ;
-	}
-	vrc.setNewline (false) ;
-	vrc.printMessage() ;
+    VerboseMessage vrc ;
+    if (Args.CvrFn.getValue() == "") {
+        vrc.setMessage (_("reading cover file from standard input...")) ;
+    }
+    else {
+        vrc.setMessage (_("reading cover file \"%s\"..."), Args.CvrFn.getValue().c_str()) ;
+    }
+    vrc.setNewline (false) ;
+    vrc.printMessage() ;
 
-	CvrStgFile::readFile (Args.CvrFn.getValue()) ;
+    CvrStgFile::readFile (Args.CvrFn.getValue()) ;
 
-	vdone.printMessage() ;
+    vdone.printMessage() ;
 
-	ToEmbed.setArity (Globs.TheCvrStgFile->getEmbValueModulus()) ;
+    ToEmbed.setArity (Globs.TheCvrStgFile->getEmbValueModulus()) ;
 	if ((ToEmbed.getNAryLength() * Globs.TheCvrStgFile->getSamplesPerVertex()) > Globs.TheCvrStgFile->getNumSamples()) {
 		throw SteghideError (_("the cover file is too short to embed the data.")) ;
 	}
 
-	// create graph
-	Selector sel (Globs.TheCvrStgFile->getNumSamples(), Args.Passphrase.getValue()) ;
+    // create graph
+    Selector sel (Globs.TheCvrStgFile->getNumSamples(), Args.Passphrase.getValue()) ;
 
-	VerboseMessage v (_("creating the graph...")) ;
-	v.setNewline (false) ;
-	v.printMessage() ;
-	new Graph (Globs.TheCvrStgFile, ToEmbed, sel) ;
-	Globs.TheGraph->printVerboseInfo() ;
-	if (Args.Check.getValue()) {
-		if (!Globs.TheGraph->check()) {
-			CriticalWarning w ("integrity checking of graph data structures failed!") ; // TODO: internationalize this
-			w.printMessage() ;
-		}
-	}
+    VerboseMessage v (_("creating the graph...")) ;
+    v.setNewline (false) ;
+    v.printMessage() ;
+    new Graph (Globs.TheCvrStgFile, ToEmbed, sel) ;
+    Globs.TheGraph->printVerboseInfo() ;
+    if (Args.Check.getValue()) {
+        if (!Globs.TheGraph->check()) {
+            CriticalWarning w ("integrity checking of graph data structures failed!") ; // TODO: internationalize this
+            w.printMessage() ;
+        }
+    }
 
 #ifdef DEBUG
-	if (Args.DebugCommand.getValue() == PRINTGRAPH) {
-		Globs.TheGraph->print() ;
-		exit (EXIT_SUCCESS) ;
-	}
-	else if (Args.DebugCommand.getValue() == PRINTGMLGRAPH) {
-		Globs.TheGraph->print_gml (std::cout) ;
-		exit (EXIT_SUCCESS) ;
-	}
-	else if (Args.DebugCommand.getValue() == PRINTGMLVERTEX) {
-		std::vector<bool> nodeprinted (Globs.TheGraph->getNumVertices()) ;
-		std::vector<bool> edgesprinted (Globs.TheGraph->getNumVertices()) ;
-		Globs.TheGraph->printPrologue_gml(std::cout) ;
-		Globs.TheGraph->printVertex_gml (std::cout, Globs.TheGraph->getVertex(Args.GmlStartVertex.getValue()), Args.GmlGraphRecDepth.getValue(), nodeprinted, edgesprinted) ;
-		Globs.TheGraph->printEpilogue_gml(std::cout) ;
-		exit (EXIT_SUCCESS) ;
-	}
+    if (Args.DebugCommand.getValue() == PRINTGRAPH) {
+        Globs.TheGraph->print() ;
+        exit (EXIT_SUCCESS) ;
+    }
+    else if (Args.DebugCommand.getValue() == PRINTGMLGRAPH) {
+        Globs.TheGraph->print_gml (std::cout) ;
+        exit (EXIT_SUCCESS) ;
+    }
+    else if (Args.DebugCommand.getValue() == PRINTGMLVERTEX) {
+        std::vector<bool> nodeprinted (Globs.TheGraph->getNumVertices()) ;
+        std::vector<bool> edgesprinted (Globs.TheGraph->getNumVertices()) ;
+        Globs.TheGraph->printPrologue_gml(std::cout) ;
+        Globs.TheGraph->printVertex_gml (std::cout, Globs.TheGraph->getVertex(Args.GmlStartVertex.getValue()), Args.GmlGraphRecDepth.getValue(), nodeprinted, edgesprinted) ;
+        Globs.TheGraph->printEpilogue_gml(std::cout) ;
+        exit (EXIT_SUCCESS) ;
+    }
 #endif
 }
 

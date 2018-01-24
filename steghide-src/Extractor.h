@@ -26,7 +26,7 @@
 class Extractor {
 	public:
 	Extractor (std::string stgfn, std::string pp)
-		: StegoFileName(stgfn), Passphrase(pp) {} ;
+        : StegoFileName(stgfn), Passphrase(pp) {}
 
 	EmbData* extract (void) ;
 

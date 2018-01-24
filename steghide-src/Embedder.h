@@ -31,14 +31,14 @@ class Vertex ;
 
 class Embedder {
 	public:
-	Embedder (void) ;
+    Embedder (void) ;
 
-	~Embedder (void) ;
+    ~Embedder (void) ;
 
 	void embed (void) ;
 
 	private:
-	static const unsigned int Default_NConstrHeur = 1 ;
+    static const unsigned int Default_NConstrHeur = 1 ;
 
 	BitString ToEmbed ;
 

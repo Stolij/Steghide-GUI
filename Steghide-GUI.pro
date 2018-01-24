@@ -86,7 +86,8 @@ SOURCES += main.cpp\
     steghide-src/WavFormatChunk.cc \
     steghide-src/WavPCMSampleValue.cc \
     steghide-src/WKSConstructionHeuristic.cc \
-    extractdialog.cpp
+    extractdialog.cpp \
+    steghide-src/Embedderlib.cpp
 
 HEADERS  += mainwindow.h \
     dialog.h \
@@ -158,7 +159,8 @@ HEADERS  += mainwindow.h \
     steghide-src/wrapper_hash_set.h \
     extractdialog.h \
     config.h \
-    StdRedirection.h
+    StdRedirection.h \
+    steghide-src/Embedderlib.h
 
 FORMS    += mainwindow.ui \
     dialog.ui \

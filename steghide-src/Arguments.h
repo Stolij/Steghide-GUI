@@ -86,7 +86,7 @@ class Arguments {
 
 	std::string getPassphrase (bool doublecheck = false) ;
 
-	private:
+    public:
 	typedef std::vector<std::string>::const_iterator ArgIt ;
 
 	static const int		NoCompression = 0 ;
