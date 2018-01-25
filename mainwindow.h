@@ -27,6 +27,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    bool getAnswer(std::string message);
+
 private slots:
     void on_sectionClicked ( int logicalIndex );
 

@@ -4,13 +4,13 @@
 #include "QStringListModel"
 #include "QMessageBox"
 #include "QInputDialog"
-#include <steghide-src/Embedder.h>
+#include <steghide-src/Embedderlib.h>
 #include <QTextStream>
 #include <QLabel>
 #include <QTextBrowser>
 
 QStringList qFilter = QStringList() << "*.jpg" << "*.JPG" << "*.jpeg" << "*.JPEG" << "*.bmp" << "*.BMP" << "*.wav" << "*.WAV" << "*.au" << "*.AU";
-bool multifiles = true;
+bool multifiles = false;
 
 void outcallback( const char* ptr, std::streamsize count, void* pString )
 {
@@ -66,6 +66,7 @@ void MainWindow::on_AddFilesButton_clicked()
 void MainWindow::on_sectionClicked (int logicalIndex)
 {
     filesmodel->removeRow(logicalIndex);
+    filenames.removeAt(logicalIndex);
 
     int count = filesmodel->rowCount() + 1;
     ui->FileTableView->verticalHeader()->setMaximumHeight(30 * count);
@@ -102,8 +103,9 @@ void MainWindow::on_CheckFileButton_clicked()
 
 void MainWindow::on_EncodeButton_clicked()
 {
+    if (filenames.size() < 1) QMessageBox::critical(this, "No file selected", "Please select a file first!"); return;
     bool ok = false;
-    passphrase=QInputDialog::getText(this, "Specify passphrase (leave empty for none)","Enter passphrase:", QLineEdit::Password, nullptr, &ok);
+    QString password = QInputDialog::getText(this, "Specify passphrase (leave empty for none)","Enter passphrase:", QLineEdit::Password, nullptr, &ok);
     if (!ok) return;
     //encode the data (WIP)
     ExtractDialog *encode_dialog;
@@ -114,12 +116,18 @@ void MainWindow::on_EncodeButton_clicked()
     encode_dialog->show();
     try
     {
-        //Embedder *embedder = new Embedder();
-        return;
+        QString embedfile = filenames[0];
+        Arguments* a = new Arguments();
+        EmbedderLib *embedder = new EmbedderLib(selected_file->getName(), embedfile.toStdString(), password.toStdString(), a->Default_EncAlgo, a->Default_EncMode);
+        embedder->Embed();
+        encode_dialog->setprogressbarvalue(100);
+        encode_dialog->setlabeltext("Success!");
     }
-    catch (...)
+    catch (SteghideError& e)
     {
-
+        encode_dialog->close();
+        QString errmessage = QString::fromStdString(e.getMessage());
+        QMessageBox::critical(this, "Embedding Failed", "Embedding Failed! ("+ errmessage +")");
     }
 }
 
@@ -163,7 +171,7 @@ void MainWindow::update_HideFilesModel(QStringList filenames)
 
 void MainWindow::update_FreeSpaceProgressBar(){
     if(selected_file!=NULL){
-        int temp=((filesmodel->get_sum_size())/(selected_file->getCapacity()))*100;
+        double temp = ((double)(filesmodel->get_sum_size()) / (double)(selected_file->getCapacity())) * 100;
         ui->FreeSpaceProgressBar->setValue(temp);
         ui->FreeSpaceProgressBar->setFormat(QString::number(filesmodel->get_sum_size())+" / "+QString::number(selected_file->getCapacity()));
     }
@@ -205,6 +213,13 @@ void MainWindow::GetContents()
     }
 }
 
+bool MainWindow::getAnswer(std::string message)
+{
+    QString qmessage = QString::fromStdString(message);
+    QMessageBox::StandardButton reply = QMessageBox::question(this, "Question", qmessage, QMessageBox::Yes|QMessageBox::No);
+    return reply;
+}
+
 void MainWindow::on_ExtractButton_clicked()
 {
     if(selected_file!=NULL){
@@ -213,7 +228,7 @@ void MainWindow::on_ExtractButton_clicked()
         if (!ok) return;
         ExtractDialog *extract_dialog;
         extract_dialog=new ExtractDialog(this);
-        extract_dialog->setWindowTitle("Extracter");
+        extract_dialog->setWindowTitle("Extractor");
         extract_dialog->setModal(true);
         extract_dialog->show();
         try{

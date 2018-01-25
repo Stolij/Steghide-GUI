@@ -63,14 +63,14 @@ bool BinaryIO::Fileexists (const std::string& fn) const
 void BinaryIO::checkForce (const std::string& fn) const
 {
 	if (!Args.Force.getValue()) {
-		if (Fileexists (fn)) {
-			Question q (_("the file \"%s\" does already exist. overwrite ?"), fn.c_str()) ;
-			q.printMessage() ;
-			if (!q.getAnswer()) {
+        if (Fileexists (fn)) {
+            Question q (_("the file \"%s\" does already exist. overwrite ?"), fn.c_str()) ;
+            //q.printMessage() ;
+            if (!true) {
 				throw SteghideError (_("did not write to file \"%s\"."), fn.c_str()) ;
 			}
 		}
-	}
+    }
 }
 
 void BinaryIO::open (const std::string& fn, MODE m)

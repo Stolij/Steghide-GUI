@@ -38,7 +38,7 @@
 #include "error.h"
 #include "msg.h"
 
-Globals Globs ;
+Globals Globs;
 
 Embedder::Embedder()
 {

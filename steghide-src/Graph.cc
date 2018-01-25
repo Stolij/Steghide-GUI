@@ -36,7 +36,7 @@
 
 Graph::Graph (CvrStgFile *cvr, const BitString& emb, Selector& sel)
 {
-	Globs.TheGraph = this ;
+    Globs.TheGraph = this ;
 
 	File = cvr ;
 	EmbValueModulus = File->getEmbValueModulus() ;
