@@ -103,7 +103,11 @@ void MainWindow::on_CheckFileButton_clicked()
 
 void MainWindow::on_EncodeButton_clicked()
 {
-    if (filenames.size() < 1) QMessageBox::critical(this, "No file selected", "Please select a file first!"); return;
+    if (filenames.size() < 1)
+    {
+        QMessageBox::critical(this, "No file selected", "Please select a file first!");
+        return;
+    }
     bool ok = false;
     QString password = QInputDialog::getText(this, "Specify passphrase (leave empty for none)","Enter passphrase:", QLineEdit::Password, nullptr, &ok);
     if (!ok) return;
@@ -172,6 +176,7 @@ void MainWindow::update_HideFilesModel(QStringList filenames)
 void MainWindow::update_FreeSpaceProgressBar(){
     if(selected_file!=NULL){
         double temp = ((double)(filesmodel->get_sum_size()) / (double)(selected_file->getCapacity())) * 100;
+        temp = (temp <= 100) ? temp : 100;
         ui->FreeSpaceProgressBar->setValue(temp);
         ui->FreeSpaceProgressBar->setFormat(QString::number(filesmodel->get_sum_size())+" / "+QString::number(selected_file->getCapacity()));
     }
@@ -276,7 +281,7 @@ void MainWindow::on_ExtractButton_clicked()
                 std::vector<BYTE> data = embdata->getData() ;
                 float progress=0;
                 unsigned long k;
-                unsigned long size = data.size();
+                //unsigned long size = data.size();
                 for (std::vector<BYTE>::iterator i = data.begin() ; i != data.end() ; i++) {
                     io->write8 (*i);
                     k=((i-data.begin())/100);
