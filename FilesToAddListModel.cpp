@@ -54,8 +54,20 @@ void FilesToAddListModel::removeRow(int row, const QModelIndex &parent)
 {
      beginRemoveRows(parent, row, row);
      FilesToAdd_.erase(FilesToAdd_.begin()+row);
-     sum_size -= FilesToAdd_.begin()->filesize_byte;
+     SubtractFromSum();
      endRemoveRows();
+}
+
+void FilesToAddListModel::SubtractFromSum()
+{
+    if (sum_size >= FilesToAdd_.begin()->filesize_byte)
+    {
+        sum_size -= FilesToAdd_.begin()->filesize_byte;
+    }
+    else
+    {
+        sum_size = 0;
+    }
 }
 
 unsigned long FilesToAddListModel::get_sum_size(){

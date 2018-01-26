@@ -112,10 +112,7 @@ void MainWindow::on_EncodeButton_clicked()
     }
     EncodeOptionsDialog *sdialog = new EncodeOptionsDialog(this);
     if (sdialog->exec() != 1) return;
-    //bool ok = false;
-    //QString password = QInputDialog::getText(this, "Specify passphrase (leave empty for none)","Enter passphrase:", QLineEdit::Password, nullptr, &ok);
-    //if (!ok) return;
-    //encode the data (WIP)
+    //encode the data
     QString password = sdialog->getPassword();
     EncryptionAlgorithm encryptionAlgorithm = EncryptionAlgorithm((EncryptionAlgorithm::IRep)(sdialog->getEncryptionAlgorithm()));
     EncryptionMode encryptionMode = EncryptionMode((EncryptionMode::IRep)(sdialog->getEncryptionMode()));

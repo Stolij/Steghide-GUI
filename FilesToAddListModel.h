@@ -23,6 +23,7 @@ public:
 private:
     std::vector<FilesToAdd> FilesToAdd_;
     unsigned long sum_size;
+    void SubtractFromSum();
 
 };
 
