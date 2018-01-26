@@ -4,10 +4,12 @@
 #include "QStringListModel"
 #include "QMessageBox"
 #include "QInputDialog"
+#include "encodeoptionsdialog.h"
 #include <steghide-src/Embedderlib.h>
 #include <QTextStream>
 #include <QLabel>
 #include <QTextBrowser>
+#include <QComboBox>
 
 QStringList qFilter = QStringList() << "*.jpg" << "*.JPG" << "*.jpeg" << "*.JPEG" << "*.bmp" << "*.BMP" << "*.wav" << "*.WAV" << "*.au" << "*.AU";
 bool multifiles = false;
@@ -108,28 +110,25 @@ void MainWindow::on_EncodeButton_clicked()
         QMessageBox::critical(this, "No file selected", "Please select a file first!");
         return;
     }
-    bool ok = false;
-    QString password = QInputDialog::getText(this, "Specify passphrase (leave empty for none)","Enter passphrase:", QLineEdit::Password, nullptr, &ok);
-    if (!ok) return;
+    EncodeOptionsDialog *sdialog = new EncodeOptionsDialog(this);
+    if (sdialog->exec() != 1) return;
+    //bool ok = false;
+    //QString password = QInputDialog::getText(this, "Specify passphrase (leave empty for none)","Enter passphrase:", QLineEdit::Password, nullptr, &ok);
+    //if (!ok) return;
     //encode the data (WIP)
-    ExtractDialog *encode_dialog;
-    encode_dialog =new ExtractDialog(this);
-    encode_dialog->setWindowTitle("Encoder");
-    encode_dialog->setModal(true);
-    encode_dialog->setlabeltext("Encoding...");
-    encode_dialog->show();
+    QString password = sdialog->getPassword();
+    EncryptionAlgorithm encryptionAlgorithm = EncryptionAlgorithm((EncryptionAlgorithm::IRep)(sdialog->getEncryptionAlgorithm()));
+    EncryptionMode encryptionMode = EncryptionMode((EncryptionMode::IRep)(sdialog->getEncryptionMode()));
     try
     {
         QString embedfile = filenames[0];
         Arguments* a = new Arguments();
-        EmbedderLib *embedder = new EmbedderLib(selected_file->getName(), embedfile.toStdString(), password.toStdString(), a->Default_EncAlgo, a->Default_EncMode);
+        EmbedderLib *embedder = new EmbedderLib(selected_file->getName(), embedfile.toStdString(), password.toStdString(), encryptionAlgorithm, encryptionMode);
         embedder->Embed();
-        encode_dialog->setprogressbarvalue(100);
-        encode_dialog->setlabeltext("Success!");
+        QMessageBox::information(this, "Embedding Succesful", "Embedding Succesful! \n\nencryption algorithm: "+QString::fromStdString(encryptionAlgorithm.getStringRep())+"\nencryption mode: "+QString::fromStdString(encryptionMode.getStringRep()));
     }
     catch (SteghideError& e)
     {
-        encode_dialog->close();
         QString errmessage = QString::fromStdString(e.getMessage());
         QMessageBox::critical(this, "Embedding Failed", "Embedding Failed! ("+ errmessage +")");
     }
@@ -140,7 +139,8 @@ void MainWindow::on_FilesAndFoldersTreeView_clicked(const QModelIndex &index)
     if((ui->FilesAndFoldersTreeView->selectionModel()->isSelected(index))&&(QFileInfo(dirmodel->filePath(index)).isFile())){
         try
         {
-            selected_file =  CvrStgFile::readFile((dirmodel->filePath(index)).toUtf8().constData()) ;
+            selected_file = CvrStgFile::readFile((dirmodel->filePath(index)).toUtf8().constData()) ;
+            ui->FilesAndFolders_MainPath->setText(dirmodel->filePath(index).toUtf8().constData());
             update_FreeSpaceProgressBar();
             ui->EncodeButton->setEnabled(true);
             ui->ExtractButton->setEnabled(true);
@@ -149,6 +149,7 @@ void MainWindow::on_FilesAndFoldersTreeView_clicked(const QModelIndex &index)
         catch (UnSupFileFormat e)
         {
             selected_file = NULL;
+            ui->FilesAndFolders_MainPath->setText(sPath);
             ui->ExtractButton->setEnabled(false);
             ui->EncodeButton->setEnabled(false);
             ui->CheckFileButton->setEnabled(false);
@@ -214,7 +215,10 @@ void MainWindow::GetContents()
     }
     catch (...)
     {
-
+        QMessageBox::StandardButton reply = QMessageBox::critical(this, "Get Contents Failed", "Getting contents failed, Retry with different password?", QMessageBox::Yes|QMessageBox::No);
+        if (reply == QMessageBox::Yes) {
+            GetContents();
+        }
     }
 }
 

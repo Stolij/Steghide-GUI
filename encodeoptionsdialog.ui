@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EncodeOptionsDialog</class>
+ <widget class="QDialog" name="EncodeOptionsDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>403</width>
+    <height>194</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Encoding options</string>
+  </property>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>381</width>
+     <height>171</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="9" column="0">
+     <widget class="QLineEdit" name="Input_Password">
+      <property name="echoMode">
+       <enum>QLineEdit::Password</enum>
+      </property>
+      <property name="placeholderText">
+       <string>Enter password (leave empty for none)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0">
+     <widget class="QLabel" name="Input_Password_label">
+      <property name="text">
+       <string>Password:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="0">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="6" column="0">
+     <spacer name="verticalSpacer_3">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Preferred</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>10</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="1" column="0">
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="EncryptionAlg_Label">
+        <property name="text">
+         <string>Encryption Algorithm:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QComboBox" name="EncryptionAlg_Combobox">
+        <property name="currentText">
+         <string>None (Default)</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>None (Default)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Twofish</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>RijnDael128</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>RijnDael192</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>RijnDael256</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>SaferPlus</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>RC2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>XTea</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Serpent</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>SaferSK64</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>SaferSK128</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Cast256</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Loki97</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Gost</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Threeway</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Cast128</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>BlowFish</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>DES</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>TripleDES</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Enigma</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ArcFour</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Panama</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Wake</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="EncryptionMode_label">
+        <property name="text">
+         <string>Encryption Mode:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="EncryptionModes_combobox">
+        <item>
+         <property name="text">
+          <string>Ecb (Default)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Cbc</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Ofb</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Cfb</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Nofb</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Ncfb</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Ctr</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Stream</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="11" column="0">
+     <widget class="QDialogButtonBox" name="OkCancel">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="standardButtons">
+       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>OkCancel</sender>
+   <signal>accepted()</signal>
+   <receiver>EncodeOptionsDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>OkCancel</sender>
+   <signal>rejected()</signal>
+   <receiver>EncodeOptionsDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
